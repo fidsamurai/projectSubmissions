@@ -34,7 +34,7 @@ resource "aws_subnet" "devops" {
 
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
-  id=aws_vpc.devops.id
+  vpc_id=aws_vpc.devops.id
 
   ingress {
     description = "SSH Fid"
