@@ -23,7 +23,7 @@ resource "aws_vpc" "devops" {
 }
 
 resource "aws_subnet" "devops" {
-  vpc_id            = aws_vpc.my_vpc.id
+  vpc_id            = aws_vpc.devops.id
   cidr_block        = "172.16.10.0/24"
   availability_zone = "ap-south-1a"
 
