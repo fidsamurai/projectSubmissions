@@ -14,8 +14,27 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_vpc" "devops" {
+  cidr_block = "172.16.0.0/16"
+
+  tags = {
+    Name = "tf-example"
+  }
+}
+
+resource "aws_subnet" "devops" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "172.16.10.0/24"
+  availability_zone = "ap-south-1a"
+
+  tags = {
+    Name = "tf-example"
+  }
+}
+
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
+  id=aws_vpc.devops.id
 
   ingress {
     description = "SSH Fid"
