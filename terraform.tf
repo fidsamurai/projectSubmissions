@@ -53,7 +53,7 @@ resource "aws_instance" "pgpDemo" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3a.micro"
   key_name = "devops"
-  vpc_security_group_ids = aws_security_group.SSH.vpc_id
+  vpc_security_group_ids = [aws_security_group.SSH.vpc_id]
 
   user_data = <<EOD
 #!/bin/bash
