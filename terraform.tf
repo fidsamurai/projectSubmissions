@@ -14,16 +14,21 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_vpc" "default" {
+  cidr_block = "172.31.0.0/16"
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
-  aws_vpc = aws_vpc.main.id
+  vpc_id = data.aws_vpc.default.id
 
   ingress {
     description = "SSH Fid"
     from_port = "22"
     to_port = "22"
     protocol = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block]
+    cidr_blocks = [0.0.0.0/0]
   }
 
   tags = {
