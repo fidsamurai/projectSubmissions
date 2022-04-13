@@ -14,14 +14,8 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_vpc" "default" {
-  cidr_block = "172.31.0.0/16"
-  id = var.vpc_id
-}
-
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
-  vpc_id = data.aws_vpc.default.id
 
   ingress {
     description = "SSH Fid"
