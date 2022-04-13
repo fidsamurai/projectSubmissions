@@ -15,7 +15,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_vpc" "devops" {
-  cidr_block = "172.16.0.0/16"
+  cidr_block = "192.168.0.0/16"
 
   tags = {
     Name = "tf-example"
@@ -24,7 +24,7 @@ resource "aws_vpc" "devops" {
 
 resource "aws_subnet" "devops" {
   vpc_id            = aws_vpc.devops.id
-  cidr_block        = "172.16.10.0/24"
+  cidr_block        = "192.168.1.0/24"
   availability_zone = "ap-south-1a"
 
   tags = {
@@ -52,6 +52,8 @@ resource "aws_security_group" "SSH" {
 resource "aws_instance" "pgpDemo" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3a.micro"
+  subnet_id = aws_subnet.devops.id
+  associate_public_ip_address = true
   key_name = "devops"
   vpc_security_group_ids = [aws_security_group.SSH.id]
 
