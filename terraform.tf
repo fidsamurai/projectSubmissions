@@ -16,7 +16,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
-  vpc = aws_vpc.main.id
+  aws_vpc = aws_vpc.main.id
 
   ingress {
     description = "SSH Fid"
