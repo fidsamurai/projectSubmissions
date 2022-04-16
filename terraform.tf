@@ -40,17 +40,17 @@ resource "aws_internet_gateway" "devops" {
     }
 }
 
-resource "aws_route_table" "devops" {
-    vpc_id = aws_vpc.devops.id
+resource "aws_default_route_table" "devops" {
+    default_route_table_id = aws_vpc.devops.default_route_table_id
+
     route {
       cidr_block = "0.0.0.0/0"
       gateway_id = "aws_internet_gateway.devops.id"
     }
-}
 
-resource "aws_route_table_association" "devops" {
-    subnet_id = aws_subnet.devops.id
-    route_table_id = aws_route_table.devops.id
+    tags {
+      Name = "devopsRT"
+    }
 }
 
 resource "aws_security_group" "SSH" {
