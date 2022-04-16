@@ -32,6 +32,19 @@ resource "aws_subnet" "devops" {
   }
 }
 
+resource "aws_internet_gateway" "devops" {
+    vpc_id = aws.vpc.devops.id
+
+    tags {
+      Name = "devops"
+    }
+}
+
+resource "aws_internet_gateway_attachment" "devops" {
+    internet_gateway_id = aws_internet_gateway.devops.id
+    vpc_id = aws_vpc.devops.id
+}
+
 resource "aws_security_group" "SSH" {
   name = "SSH Fid Home"
   vpc_id=aws_vpc.devops.id
