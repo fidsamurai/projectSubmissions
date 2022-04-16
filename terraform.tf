@@ -45,7 +45,7 @@ resource "aws_default_route_table" "devops" {
 
     route {
       cidr_block = "0.0.0.0/0"
-      gateway_id = "aws_internet_gateway.devops.gateway_id"
+      gateway_id = aws_internet_gateway.devops.id
     }
 
     tags = {
