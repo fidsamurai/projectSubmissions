@@ -48,7 +48,7 @@ resource "aws_default_route_table" "devops" {
       gateway_id = "aws_internet_gateway.devops.id"
     }
 
-    tags {
+    tags = {
       Name = "devopsRT"
     }
 }
