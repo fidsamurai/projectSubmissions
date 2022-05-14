@@ -1,0 +1,2 @@
+#Ignore all terraform state/provider/lock files
+.terraform*

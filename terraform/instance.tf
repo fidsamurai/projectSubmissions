@@ -14,17 +14,21 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "aws_vpc" "main" {
+  id = "vpc-3891c850"
+}
+
 resource "aws_security_group" "jenkins" {
   name        = "Jenkins"
   description = "Jenkins"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = data.aws_vpc.main.id
 
   ingress {
-    description = "HTTP from Everywhere"
-    from_port   = 80
-    to_port     = 80
+    description = "Jenkins from Everywhere"
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -32,7 +36,7 @@ resource "aws_security_group" "jenkins" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -51,11 +55,11 @@ resource "aws_security_group" "jenkins" {
 resource "aws_instance" "jenkins" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
-  key_name                    = "devops.pem"
+  key_name                    = "devops"
   associate_public_ip_address = true
 
   vpc_security_group_ids = [
-    aws.security_group.jenkins.id
+    aws_security_group.jenkins.id
   ]
 
   tags = {
@@ -70,7 +74,8 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt-get update
-sudo apt-get install jenkins python3-pip -y
+sudo apt-get install openjdk-11-jdk-headless jenkins python3-pip -y
 sudo pip3 install ansible
+sudo ln -s /usr/local/bin/ansible /usr/bin/ansible
 EOT
 }
