@@ -77,5 +77,8 @@ sudo apt-get update
 sudo apt-get install openjdk-11-jdk-headless jenkins python3-pip -y
 sudo pip3 install ansible
 sudo ln -s /usr/local/bin/ansible /usr/bin/ansible
+sudo wget https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.zip
+sudo unzip apache-maven-3.8.5-bin.zip -d /opt/maven/
+sudo ln -s /opt/maven/apache-maven-3.8.5/bin/mvn /usr/bin/mvn
 EOT
 }
