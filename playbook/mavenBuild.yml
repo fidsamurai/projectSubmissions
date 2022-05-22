@@ -3,4 +3,4 @@ name: maven build
 hosts: maven
 tasks:
   - name: Run maven build
-    command: "/bin/bash cd ~/java-code/devops/ && mvn clean install && mv target/devops-1.0-SNAPSHOT.war target/devops.war"
+    command: "/bin/bash cd ~/java-code/devops/ && mvn clean install"
