@@ -1,8 +1,9 @@
 ---
 - name: Deploy WAR file
   hosts: maven
+  connection: local
   tasks:
     - name: copy war to container
-      command: "sudo docker cp /home/ubuntu/java-code/devops/target/devops-1.0-SNAPSHOT.war tomcat:/usr/local/tomcat/webapps/devops.war"
+      ansible.builtin.command: sudo docker cp /home/ubuntu/java-code/devops/target/devops-1.0-SNAPSHOT.war tomcat:/usr/local/tomcat/webapps/devops.war
     - name: Restart container
-      command: "sudo docker restart tomcat"  
+      ansible.builtin.command: sudo docker restart tomcat

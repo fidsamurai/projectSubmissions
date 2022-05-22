@@ -1,6 +1,7 @@
 ---
 - name: maven build
   hosts: maven
+  connection: local
   tasks:
     - name: Run maven build
-      command: "/bin/bash cd /home/ubuntu/java-code/devops/ && mvn clean install"
+      ansible.builtin.command: cd /home/ubuntu/java-code/devops/ && mvn clean install
