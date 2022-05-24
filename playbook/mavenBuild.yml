@@ -4,4 +4,4 @@
   connection: local
   tasks:
     - name: Run maven build
-      ansible.builtin.command: sudo /opt/maven/bin/mvn clean install
+      ansible.builtin.command: /opt/maven/bin/mvn clean install
