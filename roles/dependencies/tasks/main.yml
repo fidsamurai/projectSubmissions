@@ -1,0 +1,51 @@
+---
+- name: WP Installation
+  block:
+    - name: Install PHP
+      apt:
+        name: php
+        state: present
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Unzip WP
+      ansible.builtin.unarchive:
+        src: https://wordpress.org/latest.zip
+        dest: /usr/share/nginx/
+        remote_src: yes
+
+    - name: copy sample config file to ready state
+      ansible.builtin.copy:
+        src: /usr/share/nginx/wp-config-sample.php
+        dest: /usr/share/nginx/wp-config.php
+
+    - name: Change DB Name
+      ansible.builtin.lineinfile:
+        path: /usr/share/nginx/wp-config.php
+        search_string: 'database_name_here'
+        line: 'wordpress'
+
+    - name: Change DB User
+      ansible.builtin.lineinfile:
+        path: /usr/share/nginx/wp-config.php
+        search_string: 'username_here'
+        line: 'wordpress'
+
+    - name: Change DB Password
+      ansible.builtin.lineinfile:
+        path: /usr/share/nginx/wp-config.php
+        search_string: 'password_here'
+        line: 'wordpress'
+
+    - name: Copy nginx conf file
+      ansible.builtin.template:
+        src: /nginx/wp.conf
+        dest: /etc/nginx/sites-enabled/wp.conf
+
+    - name: Restart Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

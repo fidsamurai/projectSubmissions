@@ -1,0 +1,10 @@
+---
+- name: mysql
+  hosts: client
+  roles:
+    - mysql
+
+- name: Dependeny Installation
+  hosts: client
+  roles:
+    - dependencies
