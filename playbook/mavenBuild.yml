@@ -5,5 +5,3 @@
   tasks:
     - name: Run maven build
       ansible.builtin.command: sudo /opt/maven/bin/mvn clean install
-      args:
-        chdir: /home/ubuntu/java-code/devops/
