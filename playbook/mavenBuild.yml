@@ -5,3 +5,5 @@
   tasks:
     - name: Run maven build
       ansible.builtin.command: /opt/maven/bin/mvn clean install
+      args:
+        chdir: ../
