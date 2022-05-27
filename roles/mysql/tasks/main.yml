@@ -1,6 +1,11 @@
 ---
 - name: mysql setup
   block:
+    - name: Install MySql
+      apt:
+        name: mysql-server
+        state: present
+
     - name: Create database user with name 'bob' and password '12345' with all database privileges
       community.mysql.mysql_user:
         name: bob
