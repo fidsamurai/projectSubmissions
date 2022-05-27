@@ -2,16 +2,42 @@
 - name: mysql setup
   block:
     - name: Install MySql
+      become: yes
       apt:
-        name: mysql-server
+        name:
+          - python3-pip
+          - mysql-server
+          - mysql-client
         state: present
+        update_cache: yes
+
+    - name: Pip install mysqlclient
+      become: yes
+      pip:
+        name: PyMySQL
+
+    - name: Mysql secure installation
+      become: yes
+      community.mysql.mysql_user:
+        login_user: root
+        login_password: ""
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"
+        name: root
+        host: localhost
+        password: redhat237
+
+    - name: Copy .my.cnf to ubuntu home
+      become: yes
+      template: src=dotmy.cnf dest=/root/.my.cnf mode=600
 
     - name: Create database user with name 'bob' and password '12345' with all database privileges
+      become: yes
       community.mysql.mysql_user:
         name: bob
         password: 12345
         priv: '*.*:ALL'
         state: present
+
     - name: Create a new database with name 'bobdata'
       community.mysql.mysql_db:
         name: wordpress

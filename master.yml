@@ -8,5 +8,6 @@
 - name: Dependeny Installation
   hosts: client
   remote_user: ubuntu
+  become: yes
   roles:
     - dependencies

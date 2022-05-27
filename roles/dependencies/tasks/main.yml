@@ -1,14 +1,13 @@
 ---
 - name: WP Installation
   block:
-    - name: Install PHP
+    - name: Install PHP and Nginx
       apt:
-        name: php
-        state: present
-
-    - name: Install Nginx
-      apt:
-        name: nginx
+        name:
+          - php-fpm
+          - nginx
+          - unzip
+          - php7.4-mysql
         state: present
 
     - name: Unzip WP
@@ -19,31 +18,48 @@
 
     - name: copy sample config file to ready state
       ansible.builtin.copy:
-        src: /usr/share/nginx/wp-config-sample.php
-        dest: /usr/share/nginx/wp-config.php
+        src: /usr/share/nginx/wordpress/wp-config-sample.php
+        dest: /usr/share/nginx/wordpress/wp-config.php
+        remote_src: yes
 
     - name: Change DB Name
       ansible.builtin.lineinfile:
-        path: /usr/share/nginx/wp-config.php
+        path: /usr/share/nginx/wordpress/wp-config.php
         search_string: 'database_name_here'
-        line: 'wordpress'
+        line: "define( 'DB_NAME', 'wordpress' );"
 
     - name: Change DB User
       ansible.builtin.lineinfile:
-        path: /usr/share/nginx/wp-config.php
+        path: /usr/share/nginx/wordpress/wp-config.php
         search_string: 'username_here'
-        line: 'wordpress'
+        line: "define( 'DB_USER', 'bob' );"
 
     - name: Change DB Password
       ansible.builtin.lineinfile:
-        path: /usr/share/nginx/wp-config.php
+        path: /usr/share/nginx/wordpress/wp-config.php
         search_string: 'password_here'
-        line: 'wordpress'
+        line: "define( 'DB_PASSWORD', '12345' );"
 
     - name: Copy nginx conf file
       ansible.builtin.template:
-        src: /nginx/wp.conf
+        src: nginx/wp.conf
         dest: /etc/nginx/sites-enabled/wp.conf
+
+    - name: Uninstall apache2
+      apt:
+        name: apache2
+        state: absent
+        purge: yes
+
+    - name: Delete default config file nginx
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Delete default html file nginx
+      ansible.builtin.file:
+        path: /var/www/html/index.nginx-debian.html
+        state: absent
 
     - name: Restart Nginx
       ansible.builtin.service:
